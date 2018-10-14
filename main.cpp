@@ -10,7 +10,7 @@
 
 int main()
 {
-	const unsigned int ELEMENT_COUNT = 100000;
+	const unsigned int ELEMENT_COUNT = 5000;
 	using ElementType = uint32_t;
 
 	using clock = std::chrono::high_resolution_clock;
@@ -26,7 +26,7 @@ int main()
 
 	std::random_device rd;
 	std::default_random_engine dre(rd());
-	std::uniform_int_distribution<int> uid(0,UINT8_MAX);
+	std::uniform_int_distribution<int> uid(0,std::numeric_limits<ElementType>::max());
 	std::generate(data.begin(), data.end(), [&] () { return uid(dre); });
 
 	std::cout << "\n";
@@ -70,7 +70,7 @@ int main()
 	result		= CRC32::GetCRCTableBased(reinterpret_cast<unsigned char*>(data.data()),
 										  static_cast<unsigned int>(data.size() * sizeof ElementType));
 	duration	= clock::now() - start;
-	std::cout << "CRC32 Custom \t\t duration: " << duration.count() << "ms \t result: 0x" << result << std::endl;
+	std::cout << "CRC32 \t\t\t duration: " << duration.count() << "ms \t result: 0x" << result << std::endl;
 #pragma endregion
 
 	std::cin.get();

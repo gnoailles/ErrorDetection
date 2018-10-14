@@ -58,4 +58,23 @@ public:
 
 		return (static_cast<uint_fast32_t>(ReverseBits(remainder, POLYNOMIAL_WIDTH)) ^ FINAL_XOR_VALUE);
 	}
+
+	static uint_fast32_t GetCRC(unsigned char const message[], int nBytes)
+	{
+	    uint_fast32_t	remainder = INITIAL_REMAINDER;
+
+		for (int byte = 0; byte < nBytes; ++byte)
+	    {
+	        remainder ^= (ReverseBits(message[byte], 8) << (POLYNOMIAL_WIDTH - 8));
+
+	        for (unsigned char bit = 8; bit > 0; --bit)
+	        {
+	            if (remainder & TOP_BIT)
+	                remainder = (remainder << 1) ^ POLYNOMIAL;
+	            else
+	                remainder = (remainder << 1);
+	        }
+	    }
+	    return (static_cast<uint_fast32_t>(ReverseBits(remainder, POLYNOMIAL_WIDTH)) ^ FINAL_XOR_VALUE);
+	}
 };
